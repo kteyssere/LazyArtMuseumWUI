@@ -1,1 +1,104 @@
-<p>test</p>
+<!DOCTYPE html>
+<html>
+
+<%- include('./partials/head.ejs') -%>
+<head>
+    <link rel="stylesheet" href="./public/css/style.css">
+    <style>
+        .grille {
+            width: auto;
+            height: 500px;
+            margin: 100px;
+            /*border: 1px solid #333;*/
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 1000px);
+            justify-content: center;
+            grid-gap: 75px;
+        }
+
+        .grid-item {
+            width: auto;
+            height: auto;
+            background: white;
+            text-align: center;
+        }
+        .p {
+            background-color: white;
+            text-align: center;
+            width: 100%;
+            border-bottom: solid 1px black;
+            border-left: solid 1px black;
+            border-right: solid 1px black;
+            padding: 7px;
+        }
+        .hero {
+            background-color: #000000;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/img/6984581.jpg');
+            background-position: center;
+            background-size: cover;
+            color: #ffffff;
+            padding: 1em;
+            text-align: center;
+        }
+        #product_img {
+            width: 100%;
+            height: 700px;
+            border: solid 1px black;
+        }
+        #reservation{
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<%- include('./partials/nav.ejs') -%>
+
+<!--<%- title -%>-->
+<div class="hero">
+    <br>
+    <h1>Exhibitions</h1>
+    <p>Come and discover talented artists by reserving your place for one or more exhibitions !</p>
+    <br>
+</div>
+<div class="grille">
+    <% for (const exhibition of data) { %>
+    <div class="grid-item">
+        <a href="/exhibition/<%- exhibition.id -%>"><img id="product_img" src="/uploads/<%- exhibition.picture -%>" style="border-radius: 10px 10px 0px 0px;"/></a>
+        <p class="p"><%- exhibition.artist -%> | <%- exhibition.name -%> | <%- exhibition.date -%></p>
+        <a id="reservation" href="/reservation/<%- exhibition.id -%>" style="background-color: #2e3e50; color: white; border-radius: 0px 0px 10px 10px; padding: 20px 445px;">Online booking</a>
+    </div>
+    <% } %>
+</div>
+<div style="height: 300px;">
+
+</div>
+
+<!--<div class="grille">-->
+<!--    {% for recipe in recipes %}-->
+<!--    <div class="grid-item">-->
+<!--        <a href="{{ path('app_recipe_show', {'id': recipe.id}) }}"><img id="product_img" src="/upload/{{ recipe.picture }}" style="border-radius: 10px 10px 0px 0px;"/></a>-->
+<!--        <p class="p">{{ recipe.name }} - {{ recipe.numberOfPerson }}<img src="/img/nbperson.png" style="height: 15px; width: 15px; margin-bottom: 5px;"> - {{ recipe.preparationTime }}min<img src="/img/time.png" style="height: 15px; width: 15px; margin-bottom: 5px;"></p>-->
+<!--        {% if is_granted('ROLE_ADMIN') %}-->
+<!--        <a href="{{ path('app_recipe_show', {'id': recipe.id}) }}">Voir</a>-->
+<!--        <a href="{{ path('app_recipe_edit', {'id': recipe.id}) }}">Modifier</a>-->
+<!--        {% endif %}-->
+<!--    </div>-->
+
+<!--    {% else %}-->
+<!--    <p>Aucunes recettes :-(</p>-->
+<!--    {% endfor %}-->
+<!--</div>-->
+
+<!--<form method="post" enctype="multipart/form-data" action="/exhibitions/post">-->
+<!--    <input type="file" name="file">-->
+<!--    <input type="submit" value="Submit">-->
+<!--</form>-->
+
+<!--<p style="margin-left: 10px;">Create a new exhibition <a href="/create-exhibition">Create</a></p>-->
+
+
+
+</body>
+<!--<%- include('./partials/footer.ejs') -%>-->
+</html>

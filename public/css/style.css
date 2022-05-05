@@ -173,3 +173,39 @@ li{
   color:#aaa;
   margin-bottom:0;
 }
+
+.grille {
+  max-width: 1300px;
+  width: auto;
+  height: 500px;
+  margin: 30px auto;
+  /*border: 1px solid #333;*/
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  justify-content: center;
+  grid-gap: 120px;
+}
+
+.grid-item {
+  width: auto;
+  height: auto;
+  background: white;
+  text-align: center;
+}
+
+.p {
+  background-color: white;
+  text-align: center;
+  width: 400px;
+  border-radius: 0px 0px 10px 10px;
+  border-bottom: solid 1px black;
+  border-left: solid 1px black;
+  border-right: solid 1px black;
+  padding: 7px;
+}
+
+#product_img {
+  width: 400px;
+  height: 350px;
+  border: solid 1px black;
+}

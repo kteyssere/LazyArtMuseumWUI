@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<%- include('./partials/head.ejs') -%>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+      integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+      crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin=""></script>
+<style>.about {
+        background-color: #000000;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/img/about.jpg');
+        background-position: center;
+        background-size: cover;
+        color: #ffffff;
+        padding: 1em;
+        text-align: center;
+    }
+    #map { width : 800px; height : 500px; margin-left: 100px;  width: 70%; margin-right: auto; margin-left: auto; padding: 70px; margin-bottom: 350px;}
+</style>
+<body onload="generateur()">
+
+<%- include('./partials/nav.ejs') -%>
+
+<div class="about">
+    <div style="background-color: white; color: black; width: 70%; margin-right: auto; margin-left: auto; padding: 70px; margin-top: 350px; margin-bottom: 50px;">
+        <h1 style="font-style: italic; font-family: 'Times New Roman';">"LazyArt, an authentic discovery"</h1>
+        <br>
+        <p>
+            Located in Grenoble, LazyArt Museum is one of the most popular museums and appreciated for its cultural richness but also for the quality and authenticity of the works exhibited there. Having more than 100,000 visitors each year, we have promised ourselves to transport you to new artistic discoveries through these numerous exhibitions.        </p>
+        <br><br>
+        - - - - - - - - - - -
+        <br><br><br>
+        <h5>OPENING HOURS :</h5>
+        <br>
+        <p>Monday |8am-10pm| &emsp; Thursday |8am-10pm| &emsp; Wednesday |8am-10pm| &emsp; Tuesday |8am-10pm| &emsp; Friday |8am-10pm| &emsp; Saturday |8am-10pm| &emsp; Sunday |8am-10pm|</p>
+        <br><br>
+        - - - - - - - - - - -
+        <br><br><br>
+        <div>
+            <h5>ACCESS :</h5>
+            <br>
+            <p>
+                LazyArt Museum&emsp;-&emsp;
+                5, place de Lavalette&emsp;-&emsp;
+                38010 Grenoble cedex 1&emsp;-&emsp;
+                Telephone : 04 76 63 44 44
+            </p>
+        </div>
+    </div>
+    <div id="map"></div>
+    <form onsubmit="generate();"></form>
+    <div id="qrResult" style="height: 300px; width: 300px;"></div>
+    <script type="text/javascript">
+        var qrcode = new QRCode(document.getElementById('qrResult'), {width:300, height:300});
+
+        function generate(){
+            var localisation = "https://www.google.com/maps/d/viewer?msa=0&hl=fr&ie=UTF8&t=m&ll=45.194276%2C5.73225599999998&spn=0%2C0&source=embed&mid=1FyTlKgwfQNff3XaHjAUjsMBxGB0&z=17";
+            qrcode.makeCode(localisation);
+        }
+    </script>
+
+
+<!--    <div class="qr_code"></div>-->
+<!--    <script src="qrcode.js"></script>-->
+<!--    <script type="text/javascript">-->
+<!--        //var qr_texte = document.querySelector("https://www.google.com/maps/d/viewer?msa=0&hl=fr&ie=UTF8&t=m&ll=45.194276%2C5.73225599999998&spn=0%2C0&source=embed&mid=1FyTlKgwfQNff3XaHjAUjsMBxGB0&z=17");-->
+
+<!--        function generateur(){-->
+<!--            var qrcode = document.getElementsByClassName("qr_code")-->
+<!--            qrcode.style.display = "flex";-->
+<!--            //qrcode.innerHTML = "";-->
+<!--            new QRCode(qrcode, "https://www.google.com/maps/d/viewer?msa=0&hl=fr&ie=UTF8&t=m&ll=45.194276%2C5.73225599999998&spn=0%2C0&source=embed&mid=1FyTlKgwfQNff3XaHjAUjsMBxGB0&z=17");-->
+<!--            //qr_texte.value = "";-->
+<!--        }-->
+<!--    </script>-->
+
+</div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', ()=>{
+        // 1 : création
+        let maCarte = L.map('map');
+
+        // 2 : choix du fond de carte
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '©️ OpenStreetMap contributors'
+        }).addTo(maCarte);
+
+        // 3 : réglage de la partie visible (centre, niveau de zoom)
+        maCarte.setView([45.194899, 5.732269], 16);
+
+        // 4 : placer un marqueur
+        let marker = L.marker([45.194899, 5.732269]).addTo(maCarte);
+        // 5 : lui associer un popup
+        marker.bindPopup("LazyArt Museum | 5 place Lavalette - 38000 Grenoble");
+    });
+</script>
+
+<%- include('./partials/footer.ejs') -%>
+
+</body>
+</html>
