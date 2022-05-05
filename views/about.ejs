@@ -8,6 +8,8 @@
 <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
         integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
         crossorigin=""></script>
+<script type="text/javascript" src="js/qrcode.js"></script>
+<script type="text/javascript" src="js/qrcode.js"></script>
 <style>.about {
         background-color: #000000;
         background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/img/about.jpg');
@@ -17,7 +19,7 @@
         padding: 1em;
         text-align: center;
     }
-    #map { width : 800px; height : 500px; margin-left: 100px;  width: 70%; margin-right: auto; margin-left: auto; padding: 70px; margin-bottom: 350px;}
+    #map { width : 800px; height : 500px; margin-left: 100px;  width: 70%; margin-right: auto; margin-left: auto; padding: 70px;}
 </style>
 <body onload="generateur()">
 
@@ -50,31 +52,9 @@
         </div>
     </div>
     <div id="map"></div>
-    <form onsubmit="generate();"></form>
-    <div id="qrResult" style="height: 300px; width: 300px;"></div>
-    <script type="text/javascript">
-        var qrcode = new QRCode(document.getElementById('qrResult'), {width:300, height:300});
-
-        function generate(){
-            var localisation = "https://www.google.com/maps/d/viewer?msa=0&hl=fr&ie=UTF8&t=m&ll=45.194276%2C5.73225599999998&spn=0%2C0&source=embed&mid=1FyTlKgwfQNff3XaHjAUjsMBxGB0&z=17";
-            qrcode.makeCode(localisation);
-        }
-    </script>
-
-
-<!--    <div class="qr_code"></div>-->
-<!--    <script src="qrcode.js"></script>-->
-<!--    <script type="text/javascript">-->
-<!--        //var qr_texte = document.querySelector("https://www.google.com/maps/d/viewer?msa=0&hl=fr&ie=UTF8&t=m&ll=45.194276%2C5.73225599999998&spn=0%2C0&source=embed&mid=1FyTlKgwfQNff3XaHjAUjsMBxGB0&z=17");-->
-
-<!--        function generateur(){-->
-<!--            var qrcode = document.getElementsByClassName("qr_code")-->
-<!--            qrcode.style.display = "flex";-->
-<!--            //qrcode.innerHTML = "";-->
-<!--            new QRCode(qrcode, "https://www.google.com/maps/d/viewer?msa=0&hl=fr&ie=UTF8&t=m&ll=45.194276%2C5.73225599999998&spn=0%2C0&source=embed&mid=1FyTlKgwfQNff3XaHjAUjsMBxGB0&z=17");-->
-<!--            //qr_texte.value = "";-->
-<!--        }-->
-<!--    </script>-->
+    <div style="margin: 100px 100px">
+        <img src="/img/qrcode.png" height="200px" width="200px" style="text-align: center;"/>
+    </div>
 
 </div>
 
@@ -97,6 +77,28 @@
         marker.bindPopup("LazyArt Museum | 5 place Lavalette - 38000 Grenoble");
     });
 </script>
+
+<!--<div>-->
+<!--    <section>-->
+<!--        <label>BLABLA</label>-->
+<!--        <input type="text" class="qr_texte" onchange="generateur()">-->
+<!--        <div class="qr_code"></div>-->
+<!--    </section>-->
+
+<!--    <script src="qrcode.min.js"></script>-->
+<!--    <script type="text/javascript">-->
+<!--        var qr_texte = document.querySelector(".qr_texte");-->
+
+<!--        function generateur(){-->
+<!--            var qrcode = document.querySelector(".qr_code")-->
+<!--            qrcode.style.display = "flex";-->
+<!--            qrcode.innerHTML = "";-->
+<!--            new QRCode(qrcode, qr_texte.value);-->
+<!--            qr_texte.value = "";-->
+<!--        }-->
+<!--    </script>-->
+<!--</div>-->
+
 
 <%- include('./partials/footer.ejs') -%>
 

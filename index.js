@@ -23,6 +23,7 @@ app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.get('/', (req, res) => {
+    //console.log(req);
     res.render('index', {title: 'Welcome to website for exhibition'});
 });
 
@@ -54,6 +55,12 @@ app.get('/profile',  function(req, res, next) {
 app.get('/create-exhibition', function(req, res) {
     res.render('createexhibition', { title: 'Create a new exhibition',
         message:req.flash('createExhibitionMessage') });
+});
+
+/* GET update exhibition */
+app.get('/edit-exhibition/:id', function(req, res) {
+    res.render('editexhibition', { title: 'edit a exhibition',
+        message:req.flash('editExhibitionMessage') });
 });
 
 app.listen(PORT, () => {

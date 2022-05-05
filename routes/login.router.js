@@ -1,7 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const loginRouter = express.Router();
-const mywebserver = 'https://localhost:8000';
+const mywebserver = 'http://localhost:8000';
 
 loginRouter.post('/post', (req, res) => {
     axios.put(`${mywebserver}/login`, {

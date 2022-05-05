@@ -1,8 +1,8 @@
 const express = require('express');
 const axios = require('axios');
 const exhibitionRouter = express.Router();
-//const mywebserver = 'https://evening-escarpment-87282.herokuapp.com';
-const mywebserver = 'https://localhost:8000';
+//const mywebserver = 'http://evening-escarpment-87282.herokuapp.com';
+const mywebserver = 'http://localhost:8000';
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
@@ -24,21 +24,36 @@ exhibitionRouter.get('/',(req, res) => {
         })
     }).catch((err) => res.send(err));
 });
-// exhibitionRouter.post('/post', (req, res) => {
-//     axios.post(`${mywebserver}/exhibitions`, {
-//         name: req.fields.name,
-//         artist: req.fields.artist,
-//         // picture: req.fields.picture,
-//         picture: req.files.originalname,
-//         date: req.fields.date
-//     })
-//     .then((results) => {
-//         res.redirect('/exhibitions');
-//     }).catch((err) => res.send(err));
-//
-//
-// });
-exhibitionRouter.post('/put',upload.single("file"), (req, res) => {
+
+exhibitionRouter.get('/:id',(req, res) => {
+    console.log(req.params);
+    axios.get(`http://localhost:8000/exhibitions/:id`,{
+        id: req.params.id
+    })
+        .then((results) => {
+            console.log('here');
+            res.render('exhibitionsshow', {
+                title: 'My Exhibition',
+                data: results.data
+            })
+        }).catch((err) => res.send(err));
+});
+//UPDATE
+exhibitionRouter.post('/edit', (req, res) => {
+    axios.post(`${mywebserver}/exhibitions`, {
+        name: req.fields.name,
+        artist: req.fields.artist,
+        // picture: req.fields.picture,
+        picture: req.files.originalname,
+        date: req.fields.date
+    })
+    .then((results) => {
+        res.redirect('/exhibitions');
+    }).catch((err) => res.send(err));
+
+
+});
+exhibitionRouter.post('/new',upload.single("file"), (req, res) => {
     axios.put(`${mywebserver}/exhibitions`, {
         name: req.fields.name,
         artist: req.fields.artist,
@@ -54,11 +69,11 @@ exhibitionRouter.post('/put',upload.single("file"), (req, res) => {
             fs.rename(tempPath, targetPath, err => {
                 if (err) return handleError(err, res);
 
-                res
-                    .status(200)
+                //res
+                    //.status(200)
                     // .contentType("text/plain")
                     // .end("File uploaded!")
-                .redirect('/exhibitions');
+
             });
         }
         else {
@@ -71,7 +86,8 @@ exhibitionRouter.post('/put',upload.single("file"), (req, res) => {
                     .end("Only .png files are allowed!");
             });
          }
-
+        console.log('abc');
+    res.redirect('/exhibitions');
     }).catch((err) => res.send(err));
 });
 // exhibitionRouter.post('/delete', (req, res) => {
