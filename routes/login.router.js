@@ -4,7 +4,7 @@ const loginRouter = express.Router();
 const mywebserver = 'http://localhost:8000';
 
 loginRouter.post('/post', (req, res) => {
-    axios.put(`${mywebserver}/login`, {
+    axios.post(`${mywebserver}/login`, {
         email: req.fields.email,
         password: req.fields.password
     })

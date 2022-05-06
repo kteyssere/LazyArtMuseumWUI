@@ -1,1 +1,155 @@
-<p>test</p>
+<!DOCTYPE html>
+<html>
+
+<%- include('./partials/head.ejs') -%>
+<head>
+    <link rel="stylesheet" href="./public/css/style.css">
+    <style>
+        .grille {
+            width: 1000px;
+            height: 500px;
+            /*border: 1px solid #333;*/
+            justify-content: center;
+            margin: 100px auto;
+        }
+
+        .grid-item {
+            width: auto;
+            height: auto;
+            background: white;
+            text-align: center;
+        }
+        .p {
+            background-color: white;
+            text-align: center;
+            width: 100%;
+            border-bottom: solid 1px black;
+            border-left: solid 1px black;
+            border-right: solid 1px black;
+            padding: 7px;
+        }
+        #product_img {
+            width: 100%;
+            height: 700px;
+            border: solid 1px black;
+        }
+        #reservation{
+            width: 100%;
+        }
+        #product_img_detail {
+            height: auto;
+            width: 100%;
+            border-top: solid 1px black;
+            border-bottom: solid 1px black;
+
+        }
+    </style>
+</head>
+<body>
+
+<%- include('./partials/nav.ejs') -%>
+
+<div class="grille">
+    <div class="grid-item">
+        <p style="border: 1px solid black; border-radius: 10px 10px 0px 0px;"><%- data.name -%></p>
+        <img id="product_img" src="/uploads/<%- data.picture -%>" style="border-radius: 10px 10px 0px 0px;"/>
+        <p class="p"><%- data.artist -%> | <%- data.name -%> | <%- data.date -%></p>
+        <a id="reservation" href="/reservation/<%- data.exhibitionId -%>" style="background-color: #2e3e50; color: white; border-radius: 0px 0px 10px 10px; padding: 20px 445px;">Online booking</a>
+    </div>
+    <div>
+        <form class="form-create-exhibition" action="/buytickets/<%- data.exhibitionId -%>" method="post">
+            <h2 class="form-signin-heading" style="text-align: center; margin-top: 50px; margin-bottom: 50px;">By tickets</h2>
+
+            <label for="inputTicketLess26" class="">Free price entry - 26 years old</label>
+            <input type="number" id="ticketLess26" name="ticketLess26" class="form-control" placeholder="Free price entry - 26 years old" required="" style="width: 100%; margin: 10px;">
+
+            <label for="inputTicketOver26" class="">Full price entry +/= 26 years old</label>
+            <input type="number" id="ticketOver26" name="ticketOver26" class="form-control" placeholder="Full price entry +/= 26 years old" required="" style="width: 100%; margin: 10px;">
+
+            <label for="inputLastName" class="">Lastname</label>
+            <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Lastname" required="" style="width: 100%; margin: 10px;">
+
+            <label for="inputName" class="">Firstname</label>
+            <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Firstname" required="" style="width: 100%; margin: 10px;">
+
+            <label for="inputMail" class="">Mail</label>
+            <input type="text" id="mail" name="mail" class="form-control" placeholder="Mail" required="" style="width: 100%; margin: 10px;">
+
+            <label for="inputTelephone" class="">Telephone</label>
+            <input type="number" id="telephone" name="telephone" class="form-control" placeholder="Telephone" required="" style="width: 100%; margin: 10px;">
+
+            <label for="inputCountry" class="">Country</label>
+            <input type="text" id="country" name="country" class="form-control" placeholder="Country" required="" style="width: 100%; margin: 10px;">
+
+            <label for="inputPostalCode" class="">Postal code</label>
+            <input type="text" id="postalcode" name="postalcode" class="form-control" placeholder="Postal code" required="" style="width: 100%; margin: 10px;">
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit" style="width: 100%; margin: 10px;">By now</button>
+            <br>
+        </form>
+    </div>
+</div>
+
+<div style="margin-right: 400px; margin-left: 400px; border: solid 1px black; margin-top: 100px; height: auto; margin-bottom: 100px; ">
+    <h2 style="text-align: center; padding-top: 15px;"><%- data.name -%></h2>
+    <p style="text-align: center; padding-bottom: 10px;">par <%- data.artist -%> le <%- data.date -%></p>
+    <img id="product_img_detail" src="/uploads/<%- data.picture -%>"/>
+
+    <div style="border-bottom: solid 1px black;">
+        <p style="padding-top: 15px; text-align: center;"><img src="/img/time.png" style="height: 25px; width: 25px; margin-bottom: 5px;"> {{ recipe.preparationTime }} minute(s) | <img src="/img/nbperson.png" style="height: 25px; width: 25px; margin-bottom: 5px;"> {{ recipe.numberOfPerson }} personne(s) | <img src="/img/level.png" style="height: 25px; width: 25px; margin-bottom: 5px;"> {{ recipe.difficulty }}</p>
+    </div>
+    <div style="border-bottom: solid 1px black;">
+        <h4 style="text-align: center; padding: 5px; border-bottom: dashed 1px black;">Ingrédients :</h4>
+        <p style="text-align: left; padding: 10px;">{{ recipe.ingredients | nl2br}}</p>
+    </div>
+    <div style="border-bottom: solid 1px black;">
+        <h4 style="text-align: center; padding: 5px; border-bottom: dashed 1px black;">Ustensiles :</h4>
+        <p style="text-align: left; padding: 10px;">{{ recipe.utensils | nl2br}}</p>
+    </div>
+    <div>
+        <h4 style="text-align: center; padding: 5px; border-bottom: dashed 1px black;">Préparation :</h4>
+        <p style="text-align: left; padding: 10px;">{{ recipe.content | nl2br}}</p>
+    </div>
+</div>
+
+<div style="margin-right: 400px; margin-left: 400px; border: solid 1px black; margin-top: 100px; height: auto; margin-bottom: 100px; ">
+    <div>
+        <h4 style="text-align: center; padding: 5px; border-bottom: dashed 1px black;">Partager la recette :</h4>
+    </div>
+    <div style="text-align: center; padding: 10px;">
+        <a style="margin-right: 5px; margin-left: 5px;" href="{{ path('recipeToPdf', {id: recipe.id}) }}" target="_blank"><img src="/img/pdf_icon.png" style="height: 45px; width: 45px;"></a>
+
+        <!-- Facebook -->
+        <a style="margin-right: 5px; margin-left: 5px;" href="http://www.facebook.com/sharer.php?u={{ app.request.uri }}" target="_blank"><img src="/img/facebook_icon.png" style="height: 45px; width: 45px;"></a>
+
+        <!-- Twitter -->
+        <a style="margin-right: 5px; margin-left: 5px;" href="http://twitter.com/share?url={{ app.request.uri }}&text=Recette sur LazyCook&hashtags=cooking" target="_blank"><img src="/img/twitter_icon.png" style="height: 45px; width: 45px;"></a>
+
+        <!-- Reddit -->
+        <a style="margin-right: 5px; margin-left: 5px;" href="http://reddit.com/submit?url={{ app.request.uri }}&title=Recette sur LazyCook" target="_blank"><img src="/img/reddit_icon.png" style="height: 45px; width: 45px;"></a>
+
+        <!-- Email -->
+        <a style="margin-right: 5px; margin-left: 5px;" href="mailto:?Subject=Recette sur LazyCook&Body=I%20saw%20this%20and%20thought%20of%20you!%20 {{ app.request.uri }}"><img src="/img/gmail_icon.png" style="height: 45px; width: 45px;"></a>
+    </div>
+</div>
+
+
+<div style="height: 300px;">
+
+</div>
+
+
+
+</body>
+<!--<%- include('./partials/footer.ejs') -%>-->
+</html>
+
+<!--<p>test</p>-->
+<!--<div class="grille">-->
+<!--    <div class="grid-item">-->
+<!--        <img id="product_img" src="/uploads/<%- data.picture -%>" style="border-radius: 10px 10px 0px 0px;"/>-->
+<!--        <p class="p"><%- data.artist -%> | <%- data.name -%> | <%- data.date -%></p>-->
+<!--        <p style="margin-left: 10px;">Edit exhibition <a href="/edit-exhibition/<%- data.exhibitionId -%>">Edit</a></p>-->
+<!--        <a id="reservation" href="/reservation/<%- data.exhibitionId -%>" style="background-color: #2e3e50; color: white; border-radius: 0px 0px 10px 10px; padding: 20px 445px;">Online booking</a>-->
+<!--    </div>-->
+<!--</div>-->

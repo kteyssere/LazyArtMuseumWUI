@@ -23,15 +23,12 @@ exhibitionRouter.get('/',(req, res) => {
             data: results.data
         })
     }).catch((err) => res.send(err));
+
 });
 
 exhibitionRouter.get('/:id',(req, res) => {
-    console.log(req.params);
-    axios.get(`http://localhost:8000/exhibitions/:id`,{
-        id: req.params.id
-    })
+    axios.get(`http://localhost:8000/exhibitions/${req.params.id}`)
         .then((results) => {
-            console.log('here');
             res.render('exhibitionsshow', {
                 title: 'My Exhibition',
                 data: results.data
@@ -39,8 +36,8 @@ exhibitionRouter.get('/:id',(req, res) => {
         }).catch((err) => res.send(err));
 });
 //UPDATE
-exhibitionRouter.post('/edit', (req, res) => {
-    axios.post(`${mywebserver}/exhibitions`, {
+exhibitionRouter.post('/edit/:id', (req, res) => {
+    axios.post(`${mywebserver}/exhibitions/${req.params.id}`, {
         name: req.fields.name,
         artist: req.fields.artist,
         // picture: req.fields.picture,
@@ -54,18 +51,19 @@ exhibitionRouter.post('/edit', (req, res) => {
 
 });
 exhibitionRouter.post('/new',upload.single("file"), (req, res) => {
-    axios.put(`${mywebserver}/exhibitions`, {
+    axios.put(`http://localhost:8000/exhibitions`, {
         name: req.fields.name,
         artist: req.fields.artist,
         picture: req.fields.picture,
         date: req.fields.date
     })
     .then((results) => {
+        console.log(req.files);
         console.log(req.files.file.name);
         const tempPath = req.files.file.path;
         const targetPath = path.join(__dirname, `./public/uploads/${req.files.file.name}`);
 
-        if (path.extname(req.files.file.name).toLowerCase() === ".png") {
+        if (path.extname(req.files.file.name).toLowerCase() === ".png" || ".jpg" || ".jpeg") {
             fs.rename(tempPath, targetPath, err => {
                 if (err) return handleError(err, res);
 
@@ -73,7 +71,8 @@ exhibitionRouter.post('/new',upload.single("file"), (req, res) => {
                     //.status(200)
                     // .contentType("text/plain")
                     // .end("File uploaded!")
-
+                console.log("here");
+                res.redirect('/');
             });
         }
         else {
@@ -86,8 +85,7 @@ exhibitionRouter.post('/new',upload.single("file"), (req, res) => {
                     .end("Only .png files are allowed!");
             });
          }
-        console.log('abc');
-    res.redirect('/exhibitions');
+
     }).catch((err) => res.send(err));
 });
 // exhibitionRouter.post('/delete', (req, res) => {
@@ -96,5 +94,19 @@ exhibitionRouter.post('/new',upload.single("file"), (req, res) => {
 //         res.redirect('/exhibitions');
 //     }).catch((err) => res.send(err));
 // });
+exhibitionRouter.post('/buyticket/:id', (req, res) => {
+    axios.post(`http://localhost:8000/exhibitions/buyticket/${req.params.id}`, {
+        // name: req.fields.name,
+        // artist: req.fields.artist,
+        // // picture: req.fields.picture,
+        // picture: req.files.originalname,
+        // date: req.fields.date
+        test:req.fields.name
+    })
+        .then((results) => {
+            console.log(req);
+            res.redirect('/exhibitions');
+        }).catch((err) => res.send(err));
+});
 
 module.exports = exhibitionRouter;

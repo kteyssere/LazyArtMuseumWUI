@@ -12,16 +12,16 @@
             <strong>Warning!</strong> <%= message %>.
         </div>
     <% } %>
-    <form class="form-create-exhibition" action="/exhibitions/edit" method="post">
+    <form class="form-create-exhibition" action="/exhibitions/edit/<%- data.exhibitionId -%>" method="post">
         <h2 class="form-signin-heading" style="text-align: center; margin-top: 50px; margin-bottom: 50px;">Edit this exhibition</h2>
         <label for="inputName" class="sr-only">Name</label>
-        <input type="text" id="name" name="name" class="form-control" placeholder="Name" required="" style="width: 100%; margin: 10px;">
+        <input type="text" id="name" name="name" class="form-control" placeholder="Name" required="" style="width: 100%; margin: 10px;" value="<%- data.name -%>">
         <label for="inputartist" class="sr-only">Artist's name</label>
-        <input type="text" id="artist" name="artist" class="form-control" placeholder="artist" required="" style="width: 100%; margin: 10px;">
+        <input type="text" id="artist" name="artist" class="form-control" placeholder="artist" required="" style="width: 100%; margin: 10px;" value="<%- data.artist -%>">
         <label for="inputpicture" class="sr-only">Exhibition's picture</label>
-        <input type="file" id="picture" name="picture" class="form-control" placeholder="picture" required="" style="width: 100%; margin: 10px;">
+        <input type="file" id="picture" name="picture" class="form-control" placeholder="picture" required="" style="width: 100%; margin: 10px;" value="<%- data.picture -%>">
         <label for="inputdate" class="sr-only">Date</label>
-        <input type="date" id="date" name="date" class="form-control" placeholder="date" required="" style="width: 100%; margin: 10px;">
+        <input type="date" id="date" name="date" class="form-control" placeholder="date" required="" style="width: 100%; margin: 10px;" value="<%- data.date -%>">
         <button class="btn btn-lg btn-primary btn-block" type="submit" style="width: 100%; margin: 10px;">Update</button>
         <br>
     </form>

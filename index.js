@@ -8,6 +8,9 @@ const signupRouter = require('./routes/signup.router');
 const loginRouter = require('./routes/login.router');
 const flash = require('connect-flash');
 const session = require('express-session');
+const axios = require("axios");
+const passport = require("passport");
+const nodemailer = require('nodemailer');
 
 app.use(formidable());
 
@@ -38,6 +41,15 @@ app.get('/login', function(req, res, next) {
     res.render('login', { title: 'Login Page', message:
             req.flash('loginMessage') });
 });
+//logout
+app.get('/logout',(req,res)=>{
+    req.session.destroy(function (err) {
+        res.redirect('/login'); //Inside a callback… bulletproof!
+    });
+    //req.logout();
+    req.flash('success_msg','Now logged out');
+
+})
 /* GET Signup */
 app.get('/signup', function(req, res) {
     res.render('signup', { title: 'Signup Page',
@@ -59,8 +71,39 @@ app.get('/create-exhibition', function(req, res) {
 
 /* GET update exhibition */
 app.get('/edit-exhibition/:id', function(req, res) {
-    res.render('editexhibition', { title: 'edit a exhibition',
-        message:req.flash('editExhibitionMessage') });
+    axios.get(`http://localhost:8000/exhibitions/${req.params.id}`)
+        .then((results) => {
+            res.render('editexhibition', {
+                title: 'edit a exhibition',
+                data: results.data,
+                message:req.flash('editExhibitionMessage')
+            })
+        }).catch((err) => res.send(err));
+    // res.render('editexhibition', {
+    //     title: 'edit a exhibition',
+    //     message:req.flash('editExhibitionMessage'),
+    //
+    // });
+});
+
+app.post('/buytickets/:id', (req, res) => {
+    axios.get(`http://localhost:8000/exhibitions/${req.params.id}`)
+        .then((results) => {
+            // res.render('exhibitions', {
+            //     title: 'My Exhibitions',
+            //     data: results.data
+            // })
+            axios.post(`http://localhost:8000/buytickets`, {
+                usr: req.fields,
+                exhibition: results.data
+            }).then(r => {res.redirect('/exhibitions');}).catch((err) => res.send(err));
+            res.redirect('/exhibitions');
+                // .then((results) => {
+                //     res.redirect('/exhibitions');
+                // }).catch((err) => res.send(err));
+        }).catch((err) => res.send(err));
+
+
 });
 
 app.listen(PORT, () => {
