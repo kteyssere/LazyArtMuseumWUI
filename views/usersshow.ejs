@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<%- include('./partials/head.ejs') -%>
+<head>
+    <link rel="stylesheet" href="./public/css/style.css">
+    <style>
+        .grille {
+            width: 1000px;
+            height: 500px;
+            /*border: 1px solid #333;*/
+            justify-content: center;
+            margin: 100px auto;
+        }
+
+        .grid-item {
+            width: auto;
+            height: auto;
+            background: white;
+            text-align: center;
+        }
+        .p {
+            background-color: white;
+            text-align: center;
+            width: 100%;
+            border-bottom: solid 1px black;
+            border-left: solid 1px black;
+            border-right: solid 1px black;
+            padding: 7px;
+        }
+        #product_img {
+            width: 100%;
+            height: 700px;
+            border: solid 1px black;
+        }
+        #reservation{
+            width: 100%;
+        }
+        #product_img_detail {
+            height: auto;
+            width: 100%;
+            border-top: solid 1px black;
+            border-bottom: solid 1px black;
+
+        }
+    </style>
+</head>
+<body>
+
+<%- include('./partials/nav.ejs') -%>
+
+<h2 style="text-align: center; margin-top: 100px; margin-bottom: 50px">Profile parameters</h2>
+
+<div style="border: solid 1px black; font-weight: bold; font-size: 20px; padding: 5px; width: 500px; margin-left: auto; margin-right: auto;">
+    <div style="margin-left: 10px;">
+        <p style="font-size: 16px; margin-top: 30px;">Username : <%- data.name -%></p>
+    </div>
+    <div style="margin-left: 10px;">
+        <p style="font-size: 16px; margin-top: 30px;">Email : <%- data.email -%></p>
+    </div>
+    <div style="margin-left: 10px;">
+        <p style="font-size: 16px; margin-top: 30px;">Password : ********</p>
+    </div>
+    <% if (sessionusr.roles === 'admin') { %>
+        <div style="margin-left: 10px;">
+            <p style="font-size: 16px; margin-top: 30px;">Role : <%- data.roles -%></p>
+        </div>
+    <% } %>
+</div>
+<p style="text-align: center; margin-top: 30px;">Edit your profile <a href="/edit-user/<%- data.userId -%>">here</a></p>
+
+</body>
+<!--<%- include('./partials/footer.ejs') -%>-->
+</html>
+
+<!--<p>test</p>-->
+<!--<div class="grille">-->
+<!--    <div class="grid-item">-->
+<!--        <img id="product_img" src="/uploads/<%- data.picture -%>" style="border-radius: 10px 10px 0px 0px;"/>-->
+<!--        <p class="p"><%- data.artist -%> | <%- data.name -%> | <%- data.date -%></p>-->
+<!--        <p style="margin-left: 10px;">Edit exhibition <a href="/edit-exhibition/<%- data.exhibitionId -%>">Edit</a></p>-->
+<!--        <a id="reservation" href="/reservation/<%- data.exhibitionId -%>" style="background-color: #2e3e50; color: white; border-radius: 0px 0px 10px 10px; padding: 20px 445px;">Online booking</a>-->
+<!--    </div>-->
+<!--</div>-->

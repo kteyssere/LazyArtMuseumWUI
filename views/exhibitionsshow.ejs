@@ -63,8 +63,8 @@
             <label for="inputTicketLess26" class="">Free price entry - 26 years old</label>
             <input type="number" id="ticketLess26" name="ticketLess26" class="form-control" placeholder="Free price entry - 26 years old" required="" style="width: 100%; margin: 10px;">
 
-            <label for="inputTicketOver26" class="">Full price entry +/= 26 years old</label>
-            <input type="number" id="ticketOver26" name="ticketOver26" class="form-control" placeholder="Full price entry +/= 26 years old" required="" style="width: 100%; margin: 10px;">
+            <label for="inputTicketOver26" class="">Full price entry +/= 26 years old (8,00 €)</label>
+            <input type="number" id="ticketOver26" name="ticketOver26" class="form-control" placeholder="Full price entry +/= 26 years old (8,00 €)" required="" style="width: 100%; margin: 10px;">
 
             <label for="inputLastName" class="">Lastname</label>
             <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Lastname" required="" style="width: 100%; margin: 10px;">
@@ -89,56 +89,6 @@
         </form>
     </div>
 </div>
-
-<div style="margin-right: 400px; margin-left: 400px; border: solid 1px black; margin-top: 100px; height: auto; margin-bottom: 100px; ">
-    <h2 style="text-align: center; padding-top: 15px;"><%- data.name -%></h2>
-    <p style="text-align: center; padding-bottom: 10px;">par <%- data.artist -%> le <%- data.date -%></p>
-    <img id="product_img_detail" src="/uploads/<%- data.picture -%>"/>
-
-    <div style="border-bottom: solid 1px black;">
-        <p style="padding-top: 15px; text-align: center;"><img src="/img/time.png" style="height: 25px; width: 25px; margin-bottom: 5px;"> {{ recipe.preparationTime }} minute(s) | <img src="/img/nbperson.png" style="height: 25px; width: 25px; margin-bottom: 5px;"> {{ recipe.numberOfPerson }} personne(s) | <img src="/img/level.png" style="height: 25px; width: 25px; margin-bottom: 5px;"> {{ recipe.difficulty }}</p>
-    </div>
-    <div style="border-bottom: solid 1px black;">
-        <h4 style="text-align: center; padding: 5px; border-bottom: dashed 1px black;">Ingrédients :</h4>
-        <p style="text-align: left; padding: 10px;">{{ recipe.ingredients | nl2br}}</p>
-    </div>
-    <div style="border-bottom: solid 1px black;">
-        <h4 style="text-align: center; padding: 5px; border-bottom: dashed 1px black;">Ustensiles :</h4>
-        <p style="text-align: left; padding: 10px;">{{ recipe.utensils | nl2br}}</p>
-    </div>
-    <div>
-        <h4 style="text-align: center; padding: 5px; border-bottom: dashed 1px black;">Préparation :</h4>
-        <p style="text-align: left; padding: 10px;">{{ recipe.content | nl2br}}</p>
-    </div>
-</div>
-
-<div style="margin-right: 400px; margin-left: 400px; border: solid 1px black; margin-top: 100px; height: auto; margin-bottom: 100px; ">
-    <div>
-        <h4 style="text-align: center; padding: 5px; border-bottom: dashed 1px black;">Partager la recette :</h4>
-    </div>
-    <div style="text-align: center; padding: 10px;">
-        <a style="margin-right: 5px; margin-left: 5px;" href="{{ path('recipeToPdf', {id: recipe.id}) }}" target="_blank"><img src="/img/pdf_icon.png" style="height: 45px; width: 45px;"></a>
-
-        <!-- Facebook -->
-        <a style="margin-right: 5px; margin-left: 5px;" href="http://www.facebook.com/sharer.php?u={{ app.request.uri }}" target="_blank"><img src="/img/facebook_icon.png" style="height: 45px; width: 45px;"></a>
-
-        <!-- Twitter -->
-        <a style="margin-right: 5px; margin-left: 5px;" href="http://twitter.com/share?url={{ app.request.uri }}&text=Recette sur LazyCook&hashtags=cooking" target="_blank"><img src="/img/twitter_icon.png" style="height: 45px; width: 45px;"></a>
-
-        <!-- Reddit -->
-        <a style="margin-right: 5px; margin-left: 5px;" href="http://reddit.com/submit?url={{ app.request.uri }}&title=Recette sur LazyCook" target="_blank"><img src="/img/reddit_icon.png" style="height: 45px; width: 45px;"></a>
-
-        <!-- Email -->
-        <a style="margin-right: 5px; margin-left: 5px;" href="mailto:?Subject=Recette sur LazyCook&Body=I%20saw%20this%20and%20thought%20of%20you!%20 {{ app.request.uri }}"><img src="/img/gmail_icon.png" style="height: 45px; width: 45px;"></a>
-    </div>
-</div>
-
-
-<div style="height: 300px;">
-
-</div>
-
-
 
 </body>
 <!--<%- include('./partials/footer.ejs') -%>-->

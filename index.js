@@ -4,105 +4,187 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const exhibitionRouter = require('./routes/exhibition.router');
+const userRouter = require('./routes/user.router');
 const signupRouter = require('./routes/signup.router');
-const loginRouter = require('./routes/login.router');
-const flash = require('connect-flash');
 const session = require('express-session');
 const axios = require("axios");
-const passport = require("passport");
-const nodemailer = require('nodemailer');
+const bcrypt = require('bcryptjs');
+const qr = require("qrcode");
 
 app.use(formidable());
-
-app.use(session({
-    secret:'geeksforgeeks',
-    saveUninitialized: true,
-    resave: true
-}));
-
-app.use(flash());
+app.use(session({ resave: true, secret: 'mysecret', saveUninitialized: true}));
 
 app.use(express.static(__dirname + '/public'));
+
+app.use((req, res, next) => {
+    res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    next();
+});
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.get('/', (req, res) => {
-    //console.log(req);
-    res.render('index', {title: 'Welcome to website for exhibition'});
+    let mysession = 0;
+    if(req.session){
+        if(req.session.email){
+            // mysession = req.session.email;
+            mysession = req.session;
+        }
+    }
+    res.render('index', {title: 'Welcome to website for exhibition', sessionusr: mysession});
+});
+
+app.get('/login', (req, res) => {
+    let mysession = 0;
+    if(req.session){
+        if(req.session.email){
+            // mysession = req.session.email;
+            mysession = req.session;
+        }
+    }
+    res.render('login', {title: 'Login Page', sessionusr: mysession} );
+});
+
+app.post('/plogin', (req, res) => {
+
+    axios.post(`http://localhost:8000/plogin`, {
+        email: req.fields.email,
+        password: req.fields.password
+    })
+        .then(async (results) => {
+            if (req.fields.email === results.data.email && (await bcrypt.compare(req.fields.password, results.data.password))) {
+                req.session.email = req.fields.email;
+                req.session.roles = results.data.roles;
+                req.session.name = results.data.name;
+                req.session.userId = results.data.userId;
+                res.redirect('/');
+            } else {
+                res.send('Invalid credentials');
+            }
+        }).catch((err) => res.send(err));
+
+});
+
+app.post('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/login');
 });
 
 app.use('/exhibitions', exhibitionRouter)
+app.use('/users', userRouter)
 app.use('/signup', signupRouter)
-app.use('/login', loginRouter)
-app.get('/about', (req, res) => {
-    res.render('about', {title: 'Welcome to website for exhibition'});
-});
-/* GET login page. */
-app.get('/login', function(req, res, next) {
-    res.render('login', { title: 'Login Page', message:
-            req.flash('loginMessage') });
-});
-//logout
-app.get('/logout',(req,res)=>{
-    req.session.destroy(function (err) {
-        res.redirect('/login'); //Inside a callback… bulletproof!
-    });
-    //req.logout();
-    req.flash('success_msg','Now logged out');
 
-})
+app.get('/about', (req, res) => {
+
+    let mysession = 0;
+    if(req.session){
+        if(req.session.email){
+            mysession = req.session;
+        }
+    }
+    const url = "https://www.google.com/maps/place/Musée+de+Grenoble/@45.194928,5.7301242,17z/data=!3m1!4b1!4m5!3m4!1s0x478af4f4b38dff7d:0xdd66c42bbf04a627!8m2!3d45.194928!4d5.7323129?hl=fr";
+
+    qr.toDataURL(url, (err, src) => {
+        if (err) res.send("Error occured");
+
+        // Let us return the QR code image as our response and set it to be the source used in the webpage
+        //res.render("scan", { src });
+        res.render('about', {title: 'Welcome to website for exhibition', sessionusr: mysession, qrcarte: src});
+    });
+
+
+});
+
 /* GET Signup */
 app.get('/signup', function(req, res) {
-    res.render('signup', { title: 'Signup Page',
-        message:req.flash('signupMessage') });
-});
-
-/* GET Profile page. */
-app.get('/profile',  function(req, res, next) {
-    res.render('profile', { title: 'Profile Page', user : req.user,
-        avatar: gravatar.url(req.user.email ,  {s: '100', r: 'x', d:
-                'retro'}, true) });
+    let mysession = 0;
+    if(req.session){
+        if(req.session.email){
+            mysession = req.session;
+        }
+    }
+    res.render('signup', { title: 'Signup Page',sessionusr: mysession});
 });
 
 /* GET create exhibition */
 app.get('/create-exhibition', function(req, res) {
-    res.render('createexhibition', { title: 'Create a new exhibition',
-        message:req.flash('createExhibitionMessage') });
+    let mysession = 0;
+    if(req.session){
+        if(req.session.roles === "admin"){
+            mysession = req.session;
+            res.render('createexhibition', { title: 'Create a new exhibition',sessionusr: mysession});
+        }else{
+            res.send('You are not allowed to do this');
+        }
+    }
 });
 
 /* GET update exhibition */
 app.get('/edit-exhibition/:id', function(req, res) {
-    axios.get(`http://localhost:8000/exhibitions/${req.params.id}`)
-        .then((results) => {
-            res.render('editexhibition', {
-                title: 'edit a exhibition',
-                data: results.data,
-                message:req.flash('editExhibitionMessage')
-            })
-        }).catch((err) => res.send(err));
-    // res.render('editexhibition', {
-    //     title: 'edit a exhibition',
-    //     message:req.flash('editExhibitionMessage'),
-    //
-    // });
+    let mysession = 0;
+    if(req.session){
+        if(req.session.roles === "admin"){
+            axios.get(`http://localhost:8000/exhibitions/${req.params.id}`)
+                .then((results) => {
+                    mysession = req.session;
+                    res.render('editexhibition', {
+                        title: 'edit a exhibition',
+                        data: results.data,
+                        sessionusr: mysession
+                    })
+                }).catch((err) => res.send(err));
+        }else{
+            res.send('You are not allowed to do this');
+        }
+    }
+});
+
+/* GET update user */
+app.get('/edit-user/:id', function(req, res) {
+    let mysession = 0;
+    if(req.session){
+        if(req.session.email){
+            axios.get(`http://localhost:8000/users/${req.params.id}`)
+                .then((results) => {
+                    mysession = req.session;
+                    if(req.session.email === results.data.email){
+                        res.render('edituser', {
+                            title: 'edit a user',
+                            data: results.data,
+                            sessionusr: mysession
+                        });
+                    }else{
+                        res.send('You are not allowed to edit another user than you');
+                    }
+
+                }).catch((err) => res.send(err));
+        }else{
+            res.send('You must be logged in to do this');
+        }
+    }
 });
 
 app.post('/buytickets/:id', (req, res) => {
-    axios.get(`http://localhost:8000/exhibitions/${req.params.id}`)
-        .then((results) => {
-            // res.render('exhibitions', {
-            //     title: 'My Exhibitions',
-            //     data: results.data
-            // })
-            axios.post(`http://localhost:8000/buytickets`, {
-                usr: req.fields,
-                exhibition: results.data
-            }).then(r => {res.redirect('/exhibitions');}).catch((err) => res.send(err));
-            res.redirect('/exhibitions');
-                // .then((results) => {
-                //     res.redirect('/exhibitions');
-                // }).catch((err) => res.send(err));
-        }).catch((err) => res.send(err));
 
+    if(req.session){
+        if(req.session.email){
+            axios.post(`http://localhost:8000/buytickets`, {
+                usrMail: req.session.email,
+                exhibitionId: req.params.id,
+                respform: req.fields
+            }).then(r => {
+                res.redirect('/exhibitions');
+            }).catch((err) => res.send(err));
+        }else{
+            res.send('You must be logged in to do this');
+        }
+    }
+
+    // axios.get(`http://localhost:8000/exhibitions/${req.params.id}`)
+    //     .then((results) => {
+    //
+    //         //res.redirect('/exhibitions');
+    //     }).catch((err) => res.send(err));
 
 });
 

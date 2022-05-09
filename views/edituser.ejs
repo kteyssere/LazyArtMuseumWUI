@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <%- include('./partials/head.ejs') -%>
+</head>
+<body>
+<%- include('./partials/nav.ejs') -%>
+
+<div class="container" style="margin-top: 100px; margin-bottom: 100px;">
+    <form class="form-create-exhibition" action="/exhibitions/edit/<%- data.userId -%>" method="post">
+        <h2 class="form-signin-heading" style="text-align: center; margin-top: 50px; margin-bottom: 50px;">Edit your profile</h2>
+        <label for="inputname" class="sr-only">Name</label>
+        <input type="text" id="name" name="name" class="form-control" placeholder="Name" required="" style="width: 100%; margin: 10px;" value="<%- data.name -%>">
+        <label for="inputemail" class="sr-only">Email</label>
+        <input type="text" id="artist" name="artist" class="form-control" placeholder="artist" required="" style="width: 100%; margin: 10px;" value="<%- data.email -%>">
+        <label for="inputpassword" class="sr-only">Exhibition's picture</label>
+        <input type="text" id="password" name="password" class="form-control" placeholder="password" required="" style="width: 100%; margin: 10px;">
+        <% if (sessionusr.roles === 'admin') { %>
+            <label for="inputrole" class="sr-only">Date</label>
+            <input type="text" id="role" name="role" class="form-control" placeholder="role" required="" style="width: 100%; margin: 10px;" value="<%- data.roles -%>">
+        <% } %>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" style="width: 100%; margin: 10px;">Update</button>
+        <br>
+    </form>
+</div>
+<%- include('./partials/footer.ejs') -%>
+</body>
+</html>

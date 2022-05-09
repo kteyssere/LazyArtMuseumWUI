@@ -1,7 +1,6 @@
 const express = require('express');
 const axios = require('axios');
-const exhibitionRouter = express.Router();
-//const mywebserver = 'http://evening-escarpment-87282.herokuapp.com';
+const userRouter = express.Router();
 const mywebserver = 'http://localhost:8000';
 const multer = require("multer");
 const path = require("path");
@@ -15,8 +14,8 @@ const handleError = (err, res) => {
 
 const upload = multer({dest: "./public/uploads/"});
 
-exhibitionRouter.get('/',(req, res) => {
-    axios.get(`http://localhost:8000/exhibitions`)
+userRouter.get('/',(req, res) => {
+    axios.get(`http://localhost:8000/users`)
     .then((results) => {
         let mysession = 0;
         if(req.session){
@@ -25,8 +24,8 @@ exhibitionRouter.get('/',(req, res) => {
                 mysession = req.session;
             }
         }
-        res.render('exhibitions', {
-            title: 'My Exhibitions',
+        res.render('users', {
+            title: 'My Users',
             data: results.data,
             sessionusr: mysession
         })
@@ -34,51 +33,47 @@ exhibitionRouter.get('/',(req, res) => {
 
 });
 
-exhibitionRouter.get('/:id',(req, res) => {
-    axios.get(`http://localhost:8000/exhibitions/${req.params.id}`)
+userRouter.get('/:id',(req, res) => {
+    axios.get(`http://localhost:8000/users/${req.params.id}`)
         .then((results) => {
             let mysession = 0;
             if(req.session){
                 if(req.session.email){
                     // mysession = req.session.email;
                     mysession = req.session;
-                    res.render('exhibitionsshow', {
-                        title: 'My Exhibition',
-                        data: results.data,
-                        sessionusr: mysession
-                    });
-                }else{
-                    res.send('You must be logged in to do this');
                 }
             }
-
+            res.render('usersshow', {
+                title: 'My User',
+                data: results.data,
+                sessionusr: mysession
+            })
         }).catch((err) => res.send(err));
 });
+
 //UPDATE
-exhibitionRouter.post('/edit/:id', (req, res) => {
+userRouter.post('/edit/:id', (req, res) => {
     if(req.session){
         if(req.session.roles === "admin") {
-            axios.post(`${mywebserver}/exhibitions/${req.params.id}`, {
+            axios.post(`${mywebserver}/users/${req.params.id}`, {
                 name: req.fields.name,
-                artist: req.fields.artist,
-                // picture: req.fields.picture,
-                picture: req.files.originalname,
-                date: req.fields.date
+                email: req.fields.email,
+                password: req.fields.password,
+                role: req.fields.role
             })
                 .then((results) => {
-                    res.redirect('/exhibitions');
+                    res.redirect('/users');
                 }).catch((err) => res.send(err));
         }else{
             res.send('You are not allowed to do this');
         }
     }
-
-
 });
-exhibitionRouter.post('/new',upload.single("file"), (req, res) => {
+
+userRouter.post('/new',upload.single("file"), (req, res) => {
     if(req.session){
         if(req.session.roles === "admin"){
-            axios.put(`http://localhost:8000/exhibitions`, {
+            axios.put(`http://localhost:8000/users`, {
                 name: req.fields.name,
                 artist: req.fields.artist,
                 picture: req.fields.picture,
@@ -121,12 +116,12 @@ exhibitionRouter.post('/new',upload.single("file"), (req, res) => {
 
 });
 
-exhibitionRouter.post('/delete/:id', (req, res) => {
+userRouter.post('/delete/:id', (req, res) => {
     if(req.session){
         if(req.session.roles === "admin"){
-            axios.delete(`http://localhost:8000/exhibitions/${req.params.id}`)
+            axios.delete(`http://localhost:8000/users/${req.params.id}`)
             .then((results) => {
-                res.redirect('/exhibitions');
+                res.redirect('/users');
             }).catch((err) => res.send(err));
         }else {
             res.send('You are not allowed to do this');
@@ -135,8 +130,8 @@ exhibitionRouter.post('/delete/:id', (req, res) => {
 
 });
 
-exhibitionRouter.post('/buyticket/:id', (req, res) => {
-    axios.post(`http://localhost:8000/exhibitions/buyticket/${req.params.id}`, {
+userRouter.post('/buyticket/:id', (req, res) => {
+    axios.post(`http://localhost:8000/users/buyticket/${req.params.id}`, {
         // name: req.fields.name,
         // artist: req.fields.artist,
         // // picture: req.fields.picture,
@@ -146,8 +141,8 @@ exhibitionRouter.post('/buyticket/:id', (req, res) => {
     })
         .then((results) => {
             console.log(req);
-            res.redirect('/exhibitions');
+            res.redirect('/users');
         }).catch((err) => res.send(err));
 });
 
-module.exports = exhibitionRouter;
+module.exports = userRouter;
