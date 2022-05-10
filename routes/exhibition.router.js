@@ -6,6 +6,7 @@ const mywebserver = 'http://localhost:8000';
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const moment = require("moment");
 const handleError = (err, res) => {
     res
         .status(500)
@@ -14,6 +15,11 @@ const handleError = (err, res) => {
 };
 
 const upload = multer({dest: "./public/uploads/"});
+
+exhibitionRouter.use((req, res, next)=>{
+    res.locals.moment = moment;
+    next();
+});
 
 exhibitionRouter.get('/',(req, res) => {
     axios.get(`http://localhost:8000/exhibitions`)
@@ -25,6 +31,7 @@ exhibitionRouter.get('/',(req, res) => {
                 mysession = req.session;
             }
         }
+
         res.render('exhibitions', {
             title: 'My Exhibitions',
             data: results.data,
@@ -63,7 +70,8 @@ exhibitionRouter.post('/edit/:id', (req, res) => {
                 artist: req.fields.artist,
                 // picture: req.fields.picture,
                 picture: req.files.originalname,
-                date: req.fields.date
+                date: req.fields.date,
+                description: req.fields.description
             })
                 .then((results) => {
                     res.redirect('/exhibitions');
@@ -82,7 +90,8 @@ exhibitionRouter.post('/new',upload.single("file"), (req, res) => {
                 name: req.fields.name,
                 artist: req.fields.artist,
                 picture: req.fields.picture,
-                date: req.fields.date
+                date: req.fields.date,
+                description: req.fields.description
             })
                 .then((results) => {
                     console.log(req.files);

@@ -70,9 +70,9 @@
 <div class="grille">
     <% for (const exhibition of data) { %>
     <div class="grid-item">
-        <p style="border: 1px solid black; margin: 0; font-size: 24px; font-weight: bold; padding: 10px;"><%- exhibition.name -%> by <%- exhibition.artist -%> | <%- exhibition.date -%></p>
+        <p style="border: 1px solid black; margin: 0; font-size: 24px; font-weight: bold; padding: 10px;"><%- exhibition.name -%> by <%- exhibition.artist -%> | <%= moment(exhibition.date).format('Do MMMM, YYYY')  %></p>
         <a href="/exhibitions/<%- exhibition.exhibitionId -%>"><img id="product_img" src="/uploads/<%- exhibition.picture -%>"/></a>
-        <a id="reservation" href="/exhibitions/<%- exhibition.exhibitionId -%>" style="background-color: #2e3e50; color: white; padding: 20px 450px;">Online booking</a>
+        <a id="reservation" href="/exhibitions/<%- exhibition.exhibitionId -%>" style="background-color: #2e3e50; color: white; padding: 20px 445px;">Online booking</a>
     <% if (sessionusr !== 0) { %>
             <% if (sessionusr.roles === 'admin') { %>
                 <p style="margin-top: 30px;">Edit exhibition <a href="/edit-exhibition/<%- exhibition.exhibitionId -%>">Edit</a></p>

@@ -50,41 +50,49 @@
 <%- include('./partials/nav.ejs') -%>
 
 <div class="grille">
-    <div class="grid-item">
-        <p style="border: 1px solid black; border-radius: 10px 10px 0px 0px;"><%- data.name -%></p>
-        <img id="product_img" src="/uploads/<%- data.picture -%>" style="border-radius: 10px 10px 0px 0px;"/>
-        <p class="p"><%- data.artist -%> | <%- data.name -%> | <%- data.date -%></p>
-        <a id="reservation" href="/reservation/<%- data.exhibitionId -%>" style="background-color: #2e3e50; color: white; border-radius: 0px 0px 10px 10px; padding: 20px 445px;">Online booking</a>
+<!--    <div class="grid-item">-->
+<!--        <p style="border: 1px solid black; border-radius: 10px 10px 0px 0px;"><%- data.name -%></p>-->
+<!--        <img id="product_img" src="/uploads/<%- data.picture -%>" style="border-radius: 10px 10px 0px 0px;"/>-->
+<!--        <p class="p"><%- data.artist -%> | <%- data.name -%> | <%- data.date -%></p>-->
+<!--        <a id="reservation" href="/reservation/<%- data.exhibitionId -%>" style="background-color: #2e3e50; color: white; border-radius: 0px 0px 10px 10px; padding: 20px 445px;">Online booking</a>-->
+<!--    </div>-->
+    <div class="grid-item" style="margin-bottom: 100px;">
+        <p style="border: 1px solid black; margin: 0; font-size: 24px; font-weight: bold; padding: 10px;"><%- data.name -%> by <%- data.artist -%> | <%= moment(data.date).format('Do MMMM, YYYY')  %></p>
+        <img id="product_img" src="/uploads/<%- data.picture -%>"/>
+        <p class="p"><%- data.description -%></p>
     </div>
     <div>
         <form class="form-create-exhibition" action="/buytickets/<%- data.exhibitionId -%>" method="post">
-            <h2 class="form-signin-heading" style="text-align: center; margin-top: 50px; margin-bottom: 50px;">By tickets</h2>
+            <p class="form-signin-heading" style="text-align: center; margin-top: 50px; margin-bottom: 50px; border: 1px solid black; padding: 10px; margin: 0; font-size: 24px;">Buy tickets</p>
 
-            <label for="inputTicketLess26" class="">Free price entry - 26 years old</label>
-            <input type="number" id="ticketLess26" name="ticketLess26" class="form-control" placeholder="Free price entry - 26 years old" required="" style="width: 100%; margin: 10px;">
+            <div style="border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; padding: 10px;">
+<!--                <label for="inputTicketLess26" class="">Free price entry - 26 years old</label>-->
+                <input type="number" id="ticketLess26" name="ticketLess26" class="form-control" placeholder="Free price entry - 26 years old" required="" style="width: 100%; margin: 10px;">
 
-            <label for="inputTicketOver26" class="">Full price entry +/= 26 years old (8,00 €)</label>
-            <input type="number" id="ticketOver26" name="ticketOver26" class="form-control" placeholder="Full price entry +/= 26 years old (8,00 €)" required="" style="width: 100%; margin: 10px;">
+<!--                <label for="inputTicketOver26" class="">Full price entry +/= 26 years old (8,00 €)</label>-->
+                <input type="number" id="ticketOver26" name="ticketOver26" class="form-control" placeholder="Full price entry +/= 26 years old (8,00 €)" required="" style="width: 100%; margin: 10px;">
 
-            <label for="inputLastName" class="">Lastname</label>
-            <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Lastname" required="" style="width: 100%; margin: 10px;">
+<!--                <label for="inputLastName" class="">Lastname</label>-->
+                <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Lastname" required="" style="width: 100%; margin: 10px;">
 
-            <label for="inputName" class="">Firstname</label>
-            <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Firstname" required="" style="width: 100%; margin: 10px;">
+<!--                <label for="inputName" class="">Firstname</label>-->
+                <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Firstname" required="" style="width: 100%; margin: 10px;">
 
-            <label for="inputMail" class="">Mail</label>
-            <input type="text" id="mail" name="mail" class="form-control" placeholder="Mail" required="" style="width: 100%; margin: 10px;">
+<!--                <label for="inputMail" class="">Mail</label>-->
+                <input type="text" id="mail" name="mail" class="form-control" placeholder="Mail" required="" style="width: 100%; margin: 10px;">
 
-            <label for="inputTelephone" class="">Telephone</label>
-            <input type="number" id="telephone" name="telephone" class="form-control" placeholder="Telephone" required="" style="width: 100%; margin: 10px;">
+<!--                <label for="inputTelephone" class="">Telephone</label>-->
+                <input type="number" id="telephone" name="telephone" class="form-control" placeholder="Telephone" required="" style="width: 100%; margin: 10px;">
 
-            <label for="inputCountry" class="">Country</label>
-            <input type="text" id="country" name="country" class="form-control" placeholder="Country" required="" style="width: 100%; margin: 10px;">
+<!--                <label for="inputCountry" class="">Country</label>-->
+                <input type="text" id="country" name="country" class="form-control" placeholder="Country" required="" style="width: 100%; margin: 10px;">
 
-            <label for="inputPostalCode" class="">Postal code</label>
-            <input type="text" id="postalcode" name="postalcode" class="form-control" placeholder="Postal code" required="" style="width: 100%; margin: 10px;">
+<!--                <label for="inputPostalCode" class="">Postal code</label>-->
+                <input type="text" id="postalcode" name="postalcode" class="form-control" placeholder="Postal code" required="" style="width: 100%; margin: 10px;">
+            </div>
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit" style="width: 100%; margin: 10px;">By now</button>
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit" style="width: 100%; margin: 10px;">Buy now</button>
             <br>
         </form>
     </div>
