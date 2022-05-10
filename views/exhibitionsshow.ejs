@@ -59,7 +59,7 @@
     <div class="grid-item" style="margin-bottom: 100px;">
         <p style="border: 1px solid black; margin: 0; font-size: 24px; font-weight: bold; padding: 10px;"><%- data.name -%> by <%- data.artist -%> | <%= moment(data.date).format('Do MMMM, YYYY')  %></p>
         <img id="product_img" src="/uploads/<%- data.picture -%>"/>
-        <p class="p" style="text-align: justify;"><%- data.description -%></p>
+        <p class="p" style="text-align: justify; padding: 10px;"><%- data.description -%></p>
     </div>
     <div>
         <form class="form-create-exhibition" action="/buytickets/<%- data.exhibitionId -%>" method="post">
