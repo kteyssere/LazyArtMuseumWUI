@@ -55,7 +55,7 @@ userRouter.get('/:id',(req, res) => {
 //UPDATE
 userRouter.post('/edit/:id', (req, res) => {
     if(req.session){
-        if(req.session.roles === "admin") {
+        if(req.session.email) {
             axios.post(`${mywebserver}/users/${req.params.id}`, {
                 name: req.fields.name,
                 email: req.fields.email,
