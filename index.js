@@ -3,6 +3,8 @@ const formidable = require('express-formidable');
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
+const mywebserver = 'https://lazy-art-museum-api.herokuapp.com';
+//const mywebserver = 'http://localhost:8000';
 const exhibitionRouter = require('./routes/exhibition.router');
 const userRouter = require('./routes/user.router');
 const signupRouter = require('./routes/signup.router');
@@ -47,7 +49,7 @@ app.get('/login', (req, res) => {
 
 app.post('/plogin', (req, res) => {
 
-    axios.post(`http://localhost:8000/plogin`, {
+    axios.post(`${mywebserver}/plogin`, {
         email: req.fields.email,
         password: req.fields.password
     })
@@ -124,7 +126,7 @@ app.get('/edit-exhibition/:id', function(req, res) {
     let mysession = 0;
     if(req.session){
         if(req.session.roles === "admin"){
-            axios.get(`http://localhost:8000/exhibitions/${req.params.id}`)
+            axios.get(`${mywebserver}/exhibitions/${req.params.id}`)
                 .then((results) => {
                     mysession = req.session;
                     res.render('editexhibition', {
@@ -144,7 +146,7 @@ app.get('/edit-user/:id', function(req, res) {
     let mysession = 0;
     if(req.session){
         if(req.session.email){
-            axios.get(`http://localhost:8000/users/${req.params.id}`)
+            axios.get(`${mywebserver}/users/${req.params.id}`)
                 .then((results) => {
                     mysession = req.session;
                     if(req.session.email === results.data.email){
@@ -168,19 +170,19 @@ app.post('/buytickets/:id', (req, res) => {
 
     if(req.session){
         if(req.session.email){
-            axios.post(`http://localhost:8000/buytickets`, {
-                usrMail: req.session.email,
+            axios.post(`${mywebserver}/buytickets`, {
+                //usrMail: req.session.email,
                 exhibitionId: req.params.id,
                 respform: req.fields
             }).then(r => {
-                res.redirect('/exhibitions');
+                res.redirect('/');
             }).catch((err) => res.send(err));
         }else{
             res.send('You must be logged in to do this');
         }
     }
 
-    // axios.get(`http://localhost:8000/exhibitions/${req.params.id}`)
+    // axios.get(`${mywebserver}/exhibitions/${req.params.id}`)
     //     .then((results) => {
     //
     //         //res.redirect('/exhibitions');

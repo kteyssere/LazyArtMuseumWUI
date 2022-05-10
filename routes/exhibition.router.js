@@ -1,8 +1,8 @@
 const express = require('express');
 const axios = require('axios');
 const exhibitionRouter = express.Router();
-//const mywebserver = 'http://evening-escarpment-87282.herokuapp.com';
-const mywebserver = 'http://localhost:8000';
+const mywebserver = 'https://lazy-art-museum-api.herokuapp.com';
+//const mywebserver = 'http://localhost:8000';
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
@@ -22,7 +22,7 @@ exhibitionRouter.use((req, res, next)=>{
 });
 
 exhibitionRouter.get('/',(req, res) => {
-    axios.get(`http://localhost:8000/exhibitions`)
+    axios.get(`${mywebserver}/exhibitions`)
     .then((results) => {
         let mysession = 0;
         if(req.session){
@@ -42,7 +42,7 @@ exhibitionRouter.get('/',(req, res) => {
 });
 
 exhibitionRouter.get('/:id',(req, res) => {
-    axios.get(`http://localhost:8000/exhibitions/${req.params.id}`)
+    axios.get(`${mywebserver}/exhibitions/${req.params.id}`)
         .then((results) => {
             let mysession = 0;
             if(req.session){
@@ -86,7 +86,7 @@ exhibitionRouter.post('/edit/:id', (req, res) => {
 exhibitionRouter.post('/new',upload.single("file"), (req, res) => {
     if(req.session){
         if(req.session.roles === "admin"){
-            axios.put(`http://localhost:8000/exhibitions`, {
+            axios.put(`${mywebserver}/exhibitions`, {
                 name: req.fields.name,
                 artist: req.fields.artist,
                 picture: req.fields.picture,
@@ -133,7 +133,7 @@ exhibitionRouter.post('/new',upload.single("file"), (req, res) => {
 exhibitionRouter.post('/delete/:id', (req, res) => {
     if(req.session){
         if(req.session.roles === "admin"){
-            axios.delete(`http://localhost:8000/exhibitions/${req.params.id}`)
+            axios.delete(`${mywebserver}/exhibitions/${req.params.id}`)
             .then((results) => {
                 res.redirect('/exhibitions');
             }).catch((err) => res.send(err));
@@ -145,7 +145,7 @@ exhibitionRouter.post('/delete/:id', (req, res) => {
 });
 
 exhibitionRouter.post('/buyticket/:id', (req, res) => {
-    axios.post(`http://localhost:8000/exhibitions/buyticket/${req.params.id}`, {
+    axios.post(`${mywebserver}/exhibitions/buyticket/${req.params.id}`, {
         // name: req.fields.name,
         // artist: req.fields.artist,
         // // picture: req.fields.picture,

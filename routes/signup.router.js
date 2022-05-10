@@ -1,7 +1,8 @@
 const express = require('express');
 const axios = require('axios');
 const signupRouter = express.Router();
-const mywebserver = 'http://localhost:8000';
+const mywebserver = 'https://lazy-art-museum-api.herokuapp.com';
+//const mywebserver = 'http://localhost:8000';
 
 signupRouter.post('/signuppost', (req, res) => {
     console.log(req.fields.name);

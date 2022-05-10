@@ -1,7 +1,8 @@
 const express = require('express');
 const axios = require('axios');
 const userRouter = express.Router();
-const mywebserver = 'http://localhost:8000';
+const mywebserver = 'https://lazy-art-museum-api.herokuapp.com';
+//const mywebserver = 'http://localhost:8000';
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
@@ -15,7 +16,7 @@ const handleError = (err, res) => {
 const upload = multer({dest: "./public/uploads/"});
 
 userRouter.get('/',(req, res) => {
-    axios.get(`http://localhost:8000/users`)
+    axios.get(`${mywebserver}/users`)
     .then((results) => {
         let mysession = 0;
         if(req.session){
@@ -34,7 +35,7 @@ userRouter.get('/',(req, res) => {
 });
 
 userRouter.get('/:id',(req, res) => {
-    axios.get(`http://localhost:8000/users/${req.params.id}`)
+    axios.get(`${mywebserver}/users/${req.params.id}`)
         .then((results) => {
             let mysession = 0;
             if(req.session){
@@ -73,7 +74,7 @@ userRouter.post('/edit/:id', (req, res) => {
 userRouter.post('/new',upload.single("file"), (req, res) => {
     if(req.session){
         if(req.session.roles === "admin"){
-            axios.put(`http://localhost:8000/users`, {
+            axios.put(`${mywebserver}/users`, {
                 name: req.fields.name,
                 artist: req.fields.artist,
                 picture: req.fields.picture,
@@ -119,7 +120,7 @@ userRouter.post('/new',upload.single("file"), (req, res) => {
 userRouter.post('/delete/:id', (req, res) => {
     if(req.session){
         if(req.session.roles === "admin"){
-            axios.delete(`http://localhost:8000/users/${req.params.id}`)
+            axios.delete(`${mywebserver}/users/${req.params.id}`)
             .then((results) => {
                 res.redirect('/users');
             }).catch((err) => res.send(err));
@@ -131,7 +132,7 @@ userRouter.post('/delete/:id', (req, res) => {
 });
 
 userRouter.post('/buyticket/:id', (req, res) => {
-    axios.post(`http://localhost:8000/users/buyticket/${req.params.id}`, {
+    axios.post(`${mywebserver}/users/buyticket/${req.params.id}`, {
         // name: req.fields.name,
         // artist: req.fields.artist,
         // // picture: req.fields.picture,
